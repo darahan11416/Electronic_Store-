@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class UserServiceImpl implements UserService
 {
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ModelMapper mapper;
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -105,39 +109,43 @@ public class UserServiceImpl implements UserService
 
 	@Override
 	public List<UserDto> searchUser(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+	
+		List<User> users = userRepository.findByNameContaining(keyword);
+		List<UserDto> dtolist = users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+		
+		
+		return dtolist;
 	}
 	
 	
 	private UserDto entityToDto(User savedUser) {
 		// TODO Auto-generated method stub
-		UserDto userDto = UserDto.builder()
-			.userId(savedUser.getUserId())
-			.name(savedUser.getName())
-			.email(savedUser.getEmail())
-			.password(savedUser.getPassword())
-			.about(savedUser.getAbout())
-			.gender(savedUser.getGender())
-			.imageName(savedUser.getImageName()).build();
+//		UserDto userDto = UserDto.builder()
+//			.userId(savedUser.getUserId())
+//			.name(savedUser.getName())
+//			.email(savedUser.getEmail())
+//			.password(savedUser.getPassword())
+//			.about(savedUser.getAbout())
+//			.gender(savedUser.getGender())
+//			.imageName(savedUser.getImageName()).build();
 		
 		
-		return userDto;
+		return mapper.map(savedUser, UserDto.class);
 	}
 
 	private User dtoToEntity(UserDto userDto) {
 		
-		User user= User.builder()
-				.userId(userDto.getUserId())
-				.name(userDto.getName())
-				.email(userDto.getEmail())
-				.password(userDto.getPassword())
-				.about(userDto.getAbout())
-				.gender(userDto.getGender())
-				.imageName(userDto.getImageName())
-				.build();
+//		User user= User.builder()
+//				.userId(userDto.getUserId())
+//				.name(userDto.getName())
+//				.email(userDto.getEmail())
+//				.password(userDto.getPassword())
+//				.about(userDto.getAbout())
+//				.gender(userDto.getGender())
+//				.imageName(userDto.getImageName())
+//				.build();
 		// TODO Auto-generated method stub
-		return user;
+		return mapper.map(userDto, User.class);
 	}
 	
 	

@@ -3,8 +3,12 @@ package com.example.electronic.store.entity;
 
 
 import jakarta.persistence.Entity;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
+@Builder
+@Data
 public class User {
 
 	    //@GenratedValue(strategy = GenerationType.IDENTITY

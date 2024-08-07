@@ -84,9 +84,7 @@ public class UserServiceImpl implements UserService
 		List<User> users = userRepository.findAll();
 		
 		List<UserDto> dtolist =  users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
-		
-		
-		
+
 		return dtolist ;
 	}
 
